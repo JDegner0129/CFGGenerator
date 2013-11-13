@@ -40,15 +40,15 @@ class ContextFreeGrammar(object):
 
     def __init__(self):
         self._rules = {}
-        self._start = None
+        self._start_rule = None
 
     @property
-    def start(self):
+    def start_rule(self):
         return self._start
 
-    @start.setter
-    def start(self, value):
-        self._start = value
+    @start_rule.setter
+    def start_rule(self, value):
+        self._start_rule = value
 
     def add_rule(self, symbol, rule):
         if symbol not in self._rules:
