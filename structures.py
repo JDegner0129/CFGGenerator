@@ -24,7 +24,7 @@ class PushdownAutomaton(object):
             if symbol not in self._transitions:
                 self._transitions[source][symbol] = [(dest, push, pop)]
             else:
-                self._transitions[source][symbol].append(dest, push, pop)
+                self._transitions[source][symbol].append((dest, push, pop))
 
     def pop_symbol(self):
         return self._stack.pop()
