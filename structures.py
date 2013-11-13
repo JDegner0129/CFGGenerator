@@ -14,7 +14,7 @@ class PushdownAutomaton(object):
     def start_state(self, value):
         self._start_state = value
 
-    def add_final(self, state):
+    def add_final_state(self, state):
         self._final_states.add(state)
 
     def add_transition(self, symbol, source, dest, push=None, pop=None):
