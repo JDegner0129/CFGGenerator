@@ -1,64 +1,95 @@
+import string
+
+
+class StateType:
+    Start, Loop, Accept = range(3)
+
+
 class PushdownAutomaton(object):
 
     def __init__(self):
         self._stack = []
-        self._start_state = None
-        self._final_states = set()
         self._transitions = {}
 
     @property
-    def start_state(self):
-        return self._start_state
-
-    @start_state.setter
-    def start_state(self, value):
-        self._start_state = value
-
-    def add_final_state(self, state):
-        self._final_states.add(state)
+    def transitions(self):
+        return self._transitions
 
     def add_transition(self, symbol, source, dest, push=None, pop=None):
-        if input not in self._transitions:
+        if source not in self._transitions:
             self._transitions[source] = {symbol: [(dest, push, pop)]}
         else:
-            if symbol not in self._transitions:
+            if symbol not in self._transitions[source]:
                 self._transitions[source][symbol] = [(dest, push, pop)]
             else:
                 self._transitions[source][symbol].append((dest, push, pop))
-
-    def pop_symbol(self):
-        return self._stack.pop()
-
-    def push_symbol(self, symbol):
-        self._stack.append(symbol)
 
     def simulate(self, word):
         pass
 
 
+class Rule(object):
+
+    def __init__(self, symbol, rule):
+        self._symbol = symbol
+        self._rule = rule
+
+    @property
+    def symbol(self):
+        return self._symbol
+
+    @property
+    def rule(self):
+        return self._rule
+
+
 class ContextFreeGrammar(object):
 
     def __init__(self):
-        self._rules = {}
-        self._start_rule = None
+        self._rules = []
 
     @property
     def start_rule(self):
-        return self._start
-
-    @start_rule.setter
-    def start_rule(self, value):
-        self._start_rule = value
+        if len(self._rules) == 0:
+            return None
+        return self._rules[0]
 
     def add_rule(self, symbol, rule):
-        if symbol not in self._rules:
-            self._rules[symbol] = [rule]
-        else:
-            self._rules[symbol].append(rule)
+        self._rules.append(Rule(symbol, rule))
 
     def construct_pda(self):
-        pass
+        pda = PushdownAutomaton()
+        pda.add_transition('!',
+                           StateType.Start,
+                           StateType.Loop,
+                           push=[self._rules[0].symbol, '$'])
 
-    def simulate(self, str):
+        terminals = []
+        for r in self._rules:
+            push_syms = []
+            for c in r.rule:
+                if c != '!':
+                    push_syms.append(c)
+                    if c.islower() and c not in terminals:
+                        terminals.append(c)
+            push_syms = push_syms or None
+            pda.add_transition('!',
+                               StateType.Loop,
+                               StateType.Loop,
+                               push=push_syms,
+                               pop=r.symbol)
+
+        for c in terminals:
+            pda.add_transition(c,
+                               StateType.Loop,
+                               StateType.Loop,
+                               pop=c)
+        pda.add_transition('!',
+                           StateType.Loop,
+                           StateType.Accept,
+                           pop='$')
+        return pda
+
+    def simulate(self, word):
         pda = self.construct_pda()
-        return pda.simulate(str)
+        return pda.simulate(word)
