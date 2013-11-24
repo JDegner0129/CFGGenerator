@@ -1,6 +1,3 @@
-import string
-
-
 class StateType:
     Start, Loop, Accept = range(3)
 
