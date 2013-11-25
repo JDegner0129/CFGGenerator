@@ -21,7 +21,7 @@ Will evaluate all of the provide strings for a match against the provided contex
 grammar.
 
 ## Running the Program ##
-To run this program, execute the command `python app.py < <inputfile>` from the command line.
+To run this program, execute the command `python grammar.py < <inputfile>` from the command line.
 Or, if you prefer, simply provide a pattern and expressions from stdin.
 
 ## Input ##
@@ -37,7 +37,7 @@ in the context-free grammar's language.
 TODO.
 
 ## How It Works ##
-TODO
+TODO.
 
 ## Technologies Used ##
 - Python 2.7.5
