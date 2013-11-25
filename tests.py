@@ -14,13 +14,14 @@ class CFGTest(unittest.TestCase):
         pda = cfg.construct_pda()
 
         start_transitions = {'!': [(State.Loop, ['S', '$'], None)]}
-        loop_transitions = {'!': [(State.Loop, ['a', 'R'], 'S'),
-                                  (State.Loop, ['a', 'R', 'b'], 'R'),
-                                  (State.Loop, None, 'R'),
-                                  (State.Accept, None, '$')],
-                            'a': [(State.Loop, None, 'a')],
-                            'b': [(State.Loop, None, 'b')]
-                            }
+        loop_transitions = {
+            '!': [(State.Loop, ['a', 'R'], 'S'),
+                  (State.Loop, ['a', 'R', 'b'], 'R'),
+                  (State.Loop, None, 'R'),
+                  (State.Accept, None, '$')],
+            'a': [(State.Loop, None, 'a')],
+            'b': [(State.Loop, None, 'b')]
+        }
         assert_transitions = {State.Start: start_transitions,
                               State.Loop: loop_transitions}
 

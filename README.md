@@ -39,7 +39,7 @@ the uppercase ASCII alphabet for rules, and the lowercase ASCII alphabet + '_' f
 used as the empty character.
 
 ## How It Works ##
-This module takes a set of rules and stores them in a context-free grammar. When the grammar is simulated on an 
+This module takes a set of rules and stores them in a context-free grammar. When the grammar is simulated on an
 expression, it constructs a pushdown automaton for its current ruleset and attempts to simulate the provided expression
 through that PDA. If the expression is not accepted or rejected within 100 steps, the PDA will reject the expression.
 
