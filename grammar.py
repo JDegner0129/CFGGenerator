@@ -89,6 +89,10 @@ class PushdownAutomaton(object):
 
 
 class ContextFreeGrammar(object):
+    """
+    A class to store information concerning a context-free grammar.
+    """
+
     def __init__(self):
         self._rules = []
 
