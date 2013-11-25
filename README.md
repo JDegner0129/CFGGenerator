@@ -30,7 +30,7 @@ of rules in the context-free grammars, the next n lines as the grammar's rules, 
 lines as the expressions to be matched against the grammar.
 
 ## Output ##
-This module will print 'YES' or 'NO' for each expression in the input file to denote its membership
+This module will print 'yes' or 'no' for each expression in the input file to denote its membership
 in the context-free grammar's language.
 
 ## The Grammar Rules ##
