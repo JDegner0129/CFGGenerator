@@ -34,10 +34,14 @@ This module will print 'YES' or 'NO' for each expression in the input file to de
 in the context-free grammar's language.
 
 ## The Grammar Rules ##
-TODO.
+In order for this program to execute properly, the grammar must not be left-recursive, and must use
+the uppercase ASCII alphabet for rules, and the lowercase ASCII alphabet + '_' for terminals. '!' is
+used as the empty character.
 
 ## How It Works ##
-TODO.
+This module takes a set of rules and stores them in a context-free grammar. When the grammar is simulated on an 
+expression, it constructs a pushdown automaton for its current ruleset and attempts to simulate the provided expression
+through that PDA. If the expression is not accepted or rejected within 100 steps, the PDA will reject the expression.
 
 ## Technologies Used ##
 - Python 2.7.5

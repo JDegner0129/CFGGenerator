@@ -2,7 +2,7 @@
 *.pyc
 
 # OS X ignores
-.DS_Store/
+.DS_Store
 
 # Pycharm ignores
 .idea/
