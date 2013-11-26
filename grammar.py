@@ -1,7 +1,4 @@
-from sys import stdin
-
-
-class State:
+class State(object):
     """
     An enumeration of the possible states of the constructed PDA.
     """
@@ -191,6 +188,8 @@ class ContextFreeGrammar(object):
 
 
 if __name__ == '__main__':
+    from sys import stdin
+
     num_rules = None
     cfg = ContextFreeGrammar()
     expressions = []
