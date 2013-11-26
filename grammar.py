@@ -14,7 +14,7 @@ class PushdownAutomaton(object):
     """
     def __init__(self):
         self._transitions = {}
-        self._steps = 100
+        self._steps = 0
 
     @property
     def transitions(self):
@@ -51,17 +51,17 @@ class PushdownAutomaton(object):
 
         @return: A Boolean value of the symbols' membership in this PDA's language
         """
-        if state == State.Start:  # if we're on the start state, reset the steps we have left
-            self._steps = 100
+        if state == State.Start:  # if we're on the start state, reset the steps we've taken
+            self._steps = 0
 
-        while self._steps > 0:
-            self._steps -= 1
+        while self._steps < 100:
+            self._steps += 1
             next_char = '!'
             if symbols:
                 next_char = symbols[0]
 
             # filtering lambda for viable transitions
-            transition_filter = lambda t: t in [next_char, '!']
+            transition_filter = lambda t: t in {next_char, '!'}
 
             # if the current state has no transitions, or there are no empty transitions or
             # transitions for the current character, we're done
