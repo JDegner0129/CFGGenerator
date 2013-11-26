@@ -60,15 +60,17 @@ class PushdownAutomaton(object):
             if symbols:
                 next_char = symbols[0]
 
+            # filtering lambda for viable transitions
+            transition_filter = lambda t: t in [next_char, '!']
+
             # if the current state has no transitions, or there are no empty transitions or
             # transitions for the current character, we're done
-            if state not in self._transitions or \
-                    (next_char not in self._transitions[state] and '!' not in self._transitions[state]):
+            if state not in self._transitions or not filter(transition_filter, self._transitions[state]):
                 return False
 
             else:
                 # iterate over acceptable transitions (next character and empty)
-                for sym in filter(lambda y: y in [next_char, '!'], self._transitions[state]):
+                for sym in filter(transition_filter, self._transitions[state]):
 
                     # for each transition in the transition function for this character, attempt to
                     # simulate on the new transition

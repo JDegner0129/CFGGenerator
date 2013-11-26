@@ -4,7 +4,6 @@ from grammar import ContextFreeGrammar, State
 
 
 class CFGTest(unittest.TestCase):
-
     def test_construct_pda(self):
         cfg = ContextFreeGrammar()
         cfg.add_rule('S', 'aR')
@@ -89,6 +88,7 @@ class CFGTest(unittest.TestCase):
         self.assertTrue(cfg.simulate(expr4))
         self.assertTrue(cfg.simulate(expr5))
         self.assertFalse(cfg.simulate(expr6))
+
 
 if __name__ == '__main__':
     unittest.main()
