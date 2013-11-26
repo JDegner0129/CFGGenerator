@@ -12,7 +12,6 @@ class PushdownAutomaton(object):
     """
     A class to store information concerning a pushdown automaton.
     """
-
     def __init__(self):
         self._transitions = {}
         self._steps = 100
@@ -40,9 +39,9 @@ class PushdownAutomaton(object):
         """
         Simulates this automaton on the given symbols, starting at the given state.
         """
-
         if state == State.Start:  # if we're on the start state, reset the steps we have left
             self._steps = 100
+
         while self._steps > 0:
             self._steps -= 1
             next_char = '!'
@@ -66,7 +65,7 @@ class PushdownAutomaton(object):
                             stack_copy = [x for x in stack]
 
                             # if we're not processing any characters, don't remove the first symbol
-                            new_symbols = symbols if (sym == '!' and next_char != '!') else symbols[1:]
+                            new_symbols = symbols if sym != next_char else symbols[1:]
 
                             # if we hit the accept state with no characters,
                             # or the new simulation succeeds, we accept
@@ -92,13 +91,12 @@ class ContextFreeGrammar(object):
     """
     A class to store information concerning a context-free grammar.
     """
-
     def __init__(self):
         self._rules = []
 
     def add_rule(self, symbol, rule):
         """
-        Adds a new rule to the context-free grammar.
+        Adds a new rule to the context-free grammar as a (symbol, rule) tuple.
         """
         self._rules.append((symbol, rule))
 
@@ -119,6 +117,8 @@ class ContextFreeGrammar(object):
         for symbol, rule in self._rules:
             push_syms = []
             for c in rule:
+
+                # we never put the empty string on a stack
                 if c != '!':
                     push_syms.append(c)
 
