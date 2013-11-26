@@ -19,13 +19,19 @@ class PushdownAutomaton(object):
     @property
     def transitions(self):
         """
-        The transition function for this automaton.
+        @return: The transition function for this automaton
         """
         return self._transitions
 
     def add_transition(self, symbol, source, dest, push=None, pop=None):
         """
         Adds a transition to the transition function.
+
+        @param symbol: The input symbol
+        @param source: The source state
+        @param dest: The destination state
+        @param push: The list of stack symbols to push
+        @param pop: The stack symbol to pop
         """
         if source not in self._transitions:
             self._transitions[source] = {symbol: [(dest, push, pop)]}
@@ -38,6 +44,12 @@ class PushdownAutomaton(object):
     def simulate(self, symbols, stack=[], state=State.Start):
         """
         Simulates this automaton on the given symbols, starting at the given state.
+
+        @param symbols: The symbols to use as input for this simulation
+        @param stack: The current stack for this simulation
+        @param state: The current state for this simulation
+
+        @return: A Boolean value of the symbols' membership in this PDA's language
         """
         if state == State.Start:  # if we're on the start state, reset the steps we have left
             self._steps = 100
@@ -79,6 +91,14 @@ class PushdownAutomaton(object):
     def _take_transition(self, symbols, state, stack, push_chars, pop_char):
         """
         Updates the stack and state and begins a new simulation on this PDA.
+
+        @param symbols: The list of input symbols remaining in the simulation
+        @param state: The new state of the simulation
+        @param stack: The current stack of the simulation
+        @param push_chars: The new characters to push onto the stack
+        @param pop_char: The character to pop from the stack
+
+        @return: The success or failure of the new simulation
         """
         if pop_char:
             stack.pop()
@@ -92,17 +112,25 @@ class ContextFreeGrammar(object):
     A class to store information concerning a context-free grammar.
     """
     def __init__(self):
+        self._pda = None
+        self._outdated = False
         self._rules = []
 
     def add_rule(self, symbol, rule):
         """
         Adds a new rule to the context-free grammar as a (symbol, rule) tuple.
+
+        @param symbol: The symbol for the new rule
+        @param rule: The substituted rule for this rule
         """
         self._rules.append((symbol, rule))
+        self._outdated = True
 
     def construct_pda(self):
         """
         Constructs an equivalent PDA for this context-free grammar.
+
+        @return: An equivalent PDA for this context-free grammar
         """
         pda = PushdownAutomaton()
 
@@ -142,20 +170,26 @@ class ContextFreeGrammar(object):
                            State.Loop,
                            State.Accept,
                            pop='$')
+
+        self._outdated = False
         return pda
 
     def simulate(self, word):
         """
-        Simulates the given word in this context-free grammar by constructing a PDA and
-        simulating it with the word.
+        Simulates the given word in this context-free grammar by constructing a PDA (if the current one is outdated)
+        and simulating it with the word.
+
+        @param word: The word to simulate the grammar for
+
+        @return: A Boolean stating whether or not the word is a member of this CFG's language
         """
-        pda = self.construct_pda()
-        return pda.simulate(word)
+        if self._outdated:
+            self._pda = self.construct_pda()
+        return self._pda.simulate(word)
 
 
 if __name__ == '__main__':
     num_rules = None
-    rules_read = 0
     cfg = ContextFreeGrammar()
     expressions = []
 
@@ -165,10 +199,10 @@ if __name__ == '__main__':
             break
         if num_rules is None:
             num_rules = int(stripped_line)
-        elif rules_read < num_rules:
+        elif num_rules > 0:
             symbol, rule = stripped_line.split('->')
             cfg.add_rule(symbol, rule)
-            rules_read += 1
+            num_rules -= 1
         else:
             expressions.append(stripped_line)
 
